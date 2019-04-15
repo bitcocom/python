@@ -9,3 +9,10 @@ Version(32bit) -> https://www.python.org/ftp/python/3.7.3/python-3.7.3.exe
 2. PyCharm 설치 : https://www.jetbrains.com/pycharm/download
 Previous versions -> PyCharm Community Edition -> Version 2018.3(2018.3.5 for Windows (exe)
 32bit 용 PyCharm 다운로드 후 설치한다.
+
+*참고 : PyCharm 설치 후 project interpreter 가 세팅이 안된경우 셋팅방법
+Changing the project interpreter in the project settings #
+1.In the Settings/Preferences dialog (Ctrl+Alt+S), select Project <project name> | Project Interpreter.
+2.Expand the list of the available interpreters and click the Show All link. Alternatively, click the  icon and select Show All.
+3.Select the target interpreter.
+->설명 : https://www.jetbrains.com/help/pycharm/configuring-python-interpreter.html
