@@ -1,0 +1,11 @@
+BClass
+GitHub Address-> https://github.com/bitcocom
+<Python 개발환경구축>
+1. Python 설치 : https://www.python.org/
+Downloads-> Download Python3.7.3(Windows) ->
+Version(32bit) -> https://www.python.org/ftp/python/3.7.3/python-3.7.3.exe
+32bit 용 Python-3.7.3 다운로드 후 설치한다.
+
+2. PyCharm 설치 : https://www.jetbrains.com/pycharm/download
+Previous versions -> PyCharm Community Edition -> Version 2018.3(2018.3.5 for Windows (exe)
+32bit 용 PyCharm 다운로드 후 설치한다.
