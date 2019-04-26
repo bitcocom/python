@@ -1,3 +1,4 @@
+# EX03
 #리스트 구조 만들기
 x=list()
 print(type(x))

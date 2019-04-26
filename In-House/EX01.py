@@ -1,4 +1,4 @@
-# AEX01
+# EX01
 class Ball:
     color = ""
     speed = 0
