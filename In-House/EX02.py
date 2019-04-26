@@ -18,3 +18,7 @@ print(ball01.color, ball01.speed)
 
 ball02 = Ball("Red", 50) #객체생성 후 초기화
 print(ball02.color, ball02.speed)
+
+#출력결과
+Blue 30
+Red 50
