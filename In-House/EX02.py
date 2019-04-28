@@ -1,5 +1,5 @@
 # EX02
-class Ball:
+class Ball():
     color = ""
     speed = 0
     #생성자 함수(초기화)
@@ -20,5 +20,3 @@ ball02 = Ball("Red", 50) #객체생성 후 초기화
 print(ball02.color, ball02.speed)
 
 #출력결과
-Blue 30
-Red 50
