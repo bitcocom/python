@@ -1,0 +1,63 @@
+#include <ESP8266WiFi.h>
+#include "PubSubClient.h"
+#include <DHT11.h>
+
+byte server1[] = {192,168,0,4};//MQTT 브로커IP
+int port=1883;
+
+char ssid[]="GSM_IoT_2G";
+char password[]="12341234";
+
+DHT11 dht11(4);
+WiFiClient client;
+
+void msgReceived(char *topic, byte *payload, unsigned int uLen){
+  char pBuffer[uLen+1];
+  int i;
+  for(i=0;i<uLen;i++){
+    pBuffer[i]=payload[i];
+  }
+  pBuffer[i]='\0';
+  Serial.println(pBuffer);
+  if(pBuffer[0]=='1'){
+    digitalWrite(14,HIGH);
+  }else if(pBuffer[0]=='2'){
+    digitalWrite(14,LOW);
+  }
+}
+PubSubClient mqttClient(server1,port,msgReceived,client);
+
+void setup(){
+  pinMode(14,OUTPUT);
+  Serial.begin(115200);
+  delay(10);
+  Serial.println();
+  Serial.println();
+  Serial.println("Connecting to~");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while(WiFi.status()!=WL_CONNECTED){
+    delay(500);
+    Serial.print(",");
+  }
+  Serial.println();
+  Serial.println("Wi-Fi AP Connected!");
+  Serial.println(WiFi.localIP());
+  if(mqttClient.connect("arduino")){
+    Serial.println("MQTT Broker Connected~~");
+    mqttClient.subscribe("led");
+  }
+}
+void loop(){
+  mqttClient.loop();
+  float tmp, hum;
+  int err = dht11.read(hum,tmp);
+  if(err==0){
+    char message[64] = "", pTmpBuf[50], pHumBuf[50];
+    dtostrf(tmp,5,2,pTmpBuf);
+    dtostrf(hum,5,2,pHumBuf);
+    sprintf(message,"{\"tmp\":%s,\"hum\":%s}",pTmpBuf,pHumBuf);
+    mqttClient.publish("dht11",message);
+  }
+  delay(3000);
+}
