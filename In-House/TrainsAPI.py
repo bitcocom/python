@@ -12,14 +12,14 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
-# 서울열린데이터광장 data.seoul.go.kr에서 지하철역정보를 사용하기 위해 등록한 인증키  
+# 서울열린데이터광장 data.seoul.go.kr에서 지하철역정보를 사용하기 위해 등록한 인증키
 seoul_id = "7443496561626974353343667a6843"
-# 네이버 오픈 API에서 지하철역정보를 사용하기 위해 등록한 인증키 
+# 네이버 오픈 API에서 지하철역정보를 사용하기 위해 등록한 인증키
 naver_id = "4ibvf7a7s4"  # 네이버 인증 Client_id
 naver_secret = "pcfd4vM5IVLhIpr1dgfWZyqVDIQZoCD6o3tCkQwx"  # 네이버 인증 Secret
 naver_url = "file://kepco/python"  # 비로그인 오픈 API를 사용하기 위해 등록한 웹 서비스 URL
 crs_code = "NHN:128"  # 서울열린데이터광장 지하철역정보에서 제공하는 좌표표준
-# Mash up서비스를 위한 오픈 API URL 
+# Mash up서비스를 위한 오픈 API URL
 URL_STATION = "http://openapi.seoul.go.kr:8088/"  # 서울열린데이터광장 지하철역정보
 URL_LOCAL = "https://openapi.naver.com/v1/search/local?query="  # 네이버 주변지역 정보
 URL_STATICMAP = "https://naveropenapi.apigw.ntruss.com/map-static/v2/raster?"  # 네이버 지도 API
@@ -183,7 +183,7 @@ treePlace.heading("#0", text="명칭")
 treePlace.heading("category", text="분류")
 treePlace.heading("telephone", text="전화번호")
 treePlace.place(x=50, y=150, width=700, height=300)
-# 검색한 주변시설 중 하나를 선택하면 place_selected을 실행함 
+# 검색한 주변시설 중 하나를 선택하면 place_selected을 실행함
 treePlace.bind("<<TreeviewSelect>>", place_selected)
 
 # 검색한 주변시설 중 하나를 선택하면 주소와 설명을 표시함
