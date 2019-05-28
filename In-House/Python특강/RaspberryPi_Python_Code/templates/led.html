@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>Flask GPIO LED control</title>
+</head>
+<body>
+    <h1>Flask GPIO LED control {{ status }}</h1>
+    <h3>
+    {% if message %}
+        {{ message }}
+    {% endif %}
+    
+    {% if status == true %}
+        (<a href="/off">TURN OFF</a>)
+    {% else %}
+        (<a href="/on">TURN ON</a>)
+    {% endif %}
+    </h3>
+
+</body>
+</html>

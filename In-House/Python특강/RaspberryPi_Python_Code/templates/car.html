@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Remote Car control</title>
+</head>
+
+<body style="background-color:#D3D3D3;text-align:center">
+    <h1>Remote Car control</h1>
+    <h3>
+    {% if message %}
+       <p style="color:#00FF00;" >{{ message }}</p>
+    {% endif %}
+    </h3>
+    <h3>
+    {% if distance|int > 50 %}
+        {{ distance }} cm
+    {% else %}
+        <p style="color:#FF0000;" >Be careful only {{ distance }} cm</p>
+    {% endif %}
+    </h3>
+    <h1>    
+    [<a href="/L">Left</a>]
+    [<a href="/F">Forward</a>]
+    [<a href="/R">Right</a>]
+    </h1>
+</body>
+</html>
