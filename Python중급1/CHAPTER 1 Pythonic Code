@@ -124,7 +124,7 @@ Zip
 >>> blist = ['b1', 'b2', 'b3']
 >>> for a, b in zip(alist, blist): # 병렬적으로 값을 추출
        ... print (a,b)
-a1 b
+a1 b1
 a2 b2
 a3 b3
 
