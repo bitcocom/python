@@ -1,0 +1,264 @@
+
+                       CHAPTER 1 Pythonic Code
+
+	- Split & Join
+
+	- List Comprehension
+
+	- Enumerate & Zip
+
+	- Lambda & MapReduce
+
+	- Asterisk
+
+	<참고> Data Structure - Collections
+
+	- 선형대수(Linear Algebra)
+
+	- Linear algebra codes
+
+	- Case Study - News Categorization
+
+Split & Join
+
+Split 함수
+- String Type의 값을 나눠서 List 형태로 변환
+>>> items = 'zero one two three'.split() # 빈칸을 기준으로 문자열 나누기
+>>> print (items) ['zero', 'one', 'two', 'three']
+>>> example = 'python,jquery,javascript' # ","을 기준으로 문자열 나누기
+>>> example.split(",") ['python', 'jquery', 'javascript']
+>>> a, b, c = example.split(",") # 리스트에 있는 각 값을 a,b,c 변수로 unpacking
+>>> example = 'cs50.gachon.edu'
+>>> subdomain, domain, tld = example.split('.')
+# "."을 기준으로 문자열 나누기 → Unpacking
+
+Join 함수
+- String List를 합쳐 하나의 String으로 반환할 때사용
+>>> colors = ['red', 'blue', 'green', 'yellow']
+>>> result = ''.join(colors)
+>>> result 'redbluegreenyellow'
+>>> result = ' '.join(colors) # 연결 시 빈칸 1칸으로 연결
+>>> result 'red blue green yellow'
+>>> result = ', '.join(colors) # 연결 시 ", "으로 연결
+>>> result 'red, blue, green, yellow'
+>>> result = '-'.join(colors) # 연결 시 "-"으로 연결
+>>> result 'red-blue-green-yellow'
+
+
+List comprehensions
+- 기존 List 사용하여 간단히 다른 List를 만드는 기법
+- 포괄적인 List, 포함되는 리스트라는 의미로 사용됨
+- 파이썬에서 가장 많이 사용되는 기법 중 하나
+- 일반적으로 for + append 보다 속도가 빠름
+
+>>> result = []
+>>> for i in range(10):
+     ... result.append(i)
+>>> result
+ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+>>> result = [i for i in range(10)]
+>>> result
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> result = [i for i in range(10) if i % 2 == 0]
+>>> result
+[0, 2, 4, 6, 8]
+
+>>> word_1 = "Hello"
+>>> word_2 = "World"
+>>> result = [i+j for i in word_1 for j in word_2] # Nested For loop
+>>> result
+['HW', 'Ho', 'Hr', 'Hl', 'Hd', 'eW', 'eo', 'er', 'el', 'ed', 'lW', 'lo', 'lr', 'll', 'ld', 'lW', 'lo', 'lr', 'll', 'ld', 'oW', 'oo', 'or', 'ol', 'od']
+
+>>> case_1 = ["A","B","C"]
+>>> case_2 = ["D","E","A"]
+>>> result = [i+j for i in case_1 for j in case_2]
+>>> result
+['AD', 'AE', 'AA', 'BD', 'BE', 'BA', 'CD', 'CE', 'CA']
+>>> result = [i+j for i in case_1 for j in case_2 if not(i==j)]
+# Filter: i랑 j과 같다면 List에 추가하지 않음
+>>> result
+['AD', 'AE', 'BD', 'BE', 'BA', 'CD', 'CE', 'CA']
+>>> result.sort()
+>>> result
+['AD', 'AE', 'BA', 'BD', 'BE', 'CA', 'CD', 'CE']
+>>> words = 'The quick brown fox jumps over the lazy dog'.split()
+# 문장을 빈칸 기준으로 나눠 list로 변환
+>>> print (words)
+['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog']
+>>>
+>>> stuff = [[w.upper(), w.lower(), len(w)] for w in words]
+# list의 각 elemente들을 대문자, 소문자, 길이 로 변환하여 two dimensional list로 변환
+>>> for i in stuff:
+     ... print (i)
+
+['THE', 'the', 3]
+['QUICK', 'quick', 5]
+['BROWN', 'brown', 5]
+['FOX', 'fox', 3]
+['JUMPS', 'jumps', 5]
+['OVER', 'over', 4]
+['THE', 'the', 3]
+['LAZY', 'lazy', 4]
+['DOG', 'dog', 3]
+
+Enumerate
+- List의 element를 추출할 때 번호를 붙여서 추출
+>>> for i, v in enumerate(['tic', 'tac', 'toe']): # list의 있는 index와 값을 unpacking
+      ... print (i, v)
+0 tic
+1 tac
+2 toe
+
+>>> mylist = ["a","b","c","d"]
+>>> list(enumerate(mylist)) # list의 있는 index와 값을 unpacking하여 list로 저장
+[(0, 'a'), (1, 'b'), (2, 'c'), (3, 'd')]
+>>> {i:j for i,j in enumerate('Gachon University is an academic institute
+located in South Korea.'.split())}
+# 문장을 list로 만들고 list의 index와 값을 unpacking하여 dict로 저장
+{0: 'Gachon', 1: 'University', 2: 'is', 3: 'an', 4: 'academic', 5: 'institute', 6: 'located', 7: 'in', 8: 'South', 9: 'Korea.'}
+
+Zip
+두 개의 list의 값을 병렬적으로 추출함
+>>> alist = ['a1', 'a2', 'a3']
+>>> blist = ['b1', 'b2', 'b3']
+>>> for a, b in zip(alist, blist): # 병렬적으로 값을 추출
+       ... print (a,b)
+a1 b
+a2 b2
+a3 b3
+
+>>> a,b,c =zip((1,2,3),(10,20,30),(100,200,300)) #각 tuple의 같은 index 끼리 묶음 (1, 10, 100) (2, 20, 200) (3, 30, 300)
+>>> [sum(x) for x in zip((1,2,3), (10,20,30), (100,200,300))] # 각 Tuple 같은 index를 묶어 합을 list로 변환
+[111, 222, 333]
+
+Enumerate & Zip
+>>> alist = ['a1', 'a2', 'a3']
+>>> blist = ['b1', 'b2', 'b3']
+>>> for i, (a, b) in enumerate(zip(alist, blist)):
+     ... print (i, a, b) # index alist[index] blist[index] 표시
+     ...
+0 a1 b1
+1 a2 b2
+2 a3 b3
+
+Lambda
+- 함수 이름 없이, 함수처럼 쓸 수 있는 익명함수
+- 수학의 람다 대수에서 유래함
+
+[General function]
+def f(x, y):
+    return x + y
+
+print(f(1, 4))
+
+[Lambda function]
+f = lambda x, y: x + y
+print(f(1, 4))
+
+f = lambda x, y: x + y
+print(f(1, 4))
+
+f = lambda x: x ** 2
+print(f(3))
+
+f = lambda x: x / 2
+print(f(3))
+
+print((lambda x: x +1)(5))
+
+Map function
+- Sequence 자료형 각 element에 동일한 function을 적용함
+
+>>> ex = [1,2,3,4,5]
+>>> f = lambda x: x ** 2
+>>> print(list(map(f, ex)))
+[1, 4, 9, 16, 25]
+>>> f = lambda x, y: x + y
+>>> print(list(map(f, ex, ex)))
+[2, 4, 6, 8, 10]
+>>> list( map( lambda x: x ** 2 if x % 2 == 0 else x, ex) )
+[1, 4, 3, 16, 5]
+
+Reduce function
+- map function과 달리 list에 똑같은 함수를 적용해서 통합
+
+>>> from functools import reduce
+>>> print(reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]))
+15
+
+>>> def factorial(n):
+	 return reduce(lambda x,y:x*y, range(1,n+1))
+>>> factorial(5)
+120
+
+[Summary]
+- Lambda, map, reduce는 간단한 코드로 다양한 기능을 제공
+- 그러나 코드의 직관성이 떨어져서 lambda나 reduce는 python3에서 사용을
+  권장하지 않음
+- Legacy library나 다양한 머신러닝 코드에서 여전히 사용 중
+
+Asterisk
+- 흔히 알고 있는 * 를 의미함
+- 단순 곱셈, 제곱연산, 가변 인자 활용 등 다양하게 사용됨
+
+>>> def asterisk_test(a, *args):
+         print(a, args)
+         print(type(args))
+
+>>> asterisk_test(1,2,3,4,5,6)
+1 (2, 3, 4, 5, 6)
+<class 'tuple'>
+
+>>> def asterisk_test(a, **kargs):
+        print(a, kargs)
+        print(type(kargs))
+
+>>> asterisk_test(1, b=2, c=3, d=4, e=5, f=6)
+1 {'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}
+<class 'dict'>
+
+Asterisk
+- unpacking a container - tuple, dict 등 자료형에 들어가 있는 값을 unpacking
+- 함수의 입력값, zip 등에 유용하게 사용가능
+
+>>> def asterisk_test(a, *args):
+        print(a, args)
+        print(type(args))
+
+>>> asterisk_test(1, *(2,3,4,5,6))
+1 (2, 3, 4, 5, 6)
+<class 'tuple'>
+>>> asterisk_test(1, (2,3,4,5,6))
+1 ((2, 3, 4, 5, 6),)
+<class 'tuple'>
+>>>
+>>> def asterisk_test(a, args):
+        print(a, *args)
+        print(type(args))
+
+>>> asterisk_test(1, (2,3,4,5,6))
+1 2 3 4 5 6
+<class 'tuple'>
+
+Asterisk – unpacking a container
+>>> a, b, c = ([1, 2], [3, 4], [5, 6])
+>>> print(a, b, c)
+[1, 2] [3, 4] [5, 6]
+
+>>> data = ([1, 2], [3, 4], [5, 6])
+>>> print(*data)
+[1, 2] [3, 4] [5, 6]
+
+>>> def asterisk_test(a, b, c, d,):
+        print(a, b, c, d)
+
+>>> data = {"b":1 , "c":2, "d":3}
+>>> asterisk_test(10, **data)
+10 1 2 3
+
+>>> for data in zip(*([1, 2], [3, 4], [5, 6])):
+	print(data)
+
+(1, 3, 5)
+(2, 4, 6)
