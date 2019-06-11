@@ -317,12 +317,25 @@ Asterisk – unpacking a container
 >>>
 
 [ numpy Module ]
+- 파이썬과학처리패키지
+- Numerical Python
+- 파이썬의 고성능 과학 계산용 패키지
+- Matrix와 Vector와 같은 Array 연산의 사실상의 표준
+- 한글로 넘파이로 주로 통칭, 넘피/늄파이라고 부르기도 함
+
 >>> import numpy as np
+- numpy의 호출 방법 - 일반적으로 numpy는 np라는 alias(별칭) 이용해서 호출함
+- 특별한 이유는 없음 세계적인 약속 같은 것
+
 >>> test_array=np.array([1,4,5,8], float)
 >>> test_array
 array([1., 4., 5., 8.])
 >>> type(test_array[3])
 <class 'numpy.float64'>
+- numpy는 np.array 함수를 활용하여 배열을 생성함 -> ndarray
+- numpy는 하나의 데이터 type만 배열에 넣을 수 있음
+- List와 가장 큰 차이점, Dynamic typing not supported
+- C의 Array를 사용하여 배열을 생성함
 
 >>> test_array = np.array([1, 4, 5, "8"], float)
 >>> test_array
@@ -333,8 +346,12 @@ array([1., 4., 5., 8.])
 float64
 >>> print(test_array.shape)
 (4,)
->>>
+- shape : numpy array의 object의 dimension 구성을 반환함
+- dtype : numpy array의 데이터 type을 반환함
+
 - Shape
+- Array shape (vector)
+- Array (vector, matrix, tensor)의 크기, 형태 등에 대한 정보
 
 >>> vector = [1,2,3,4]
 >>> np.array(vector, int).shape
@@ -343,3 +360,52 @@ float64
 >>> np.array(matrix, int).shape
 (3, 4)
 >>>
+
+reshape
+- Array의 shape의 크기를 변경함 (element의 갯수는 동일)
+>>>import numpy as np
+>>>test_matrix = [[1,2,3,4], [1,2,5,8]]
+>>>np.array(test_matrix).shape
+(2, 4)
+>>>test =np.array(test_matrix).reshape(8,)
+array([1, 2, 3, 4, 1, 2, 5, 8])
+
+>>>np.array(test_matrix).reshape(2,2,2)
+array([[[1, 2],
+        [3, 4]],
+       [[1, 2],
+        [5, 8]]])
+
+[Array의 size만 같다면 다차원으로 자유로이 변형가능]
+>>>test.reshape(-1, 1)  # -1: size를 기반으로 row 개수 선정
+array([[1],
+       [2],
+       [3],
+       [4],
+       [1],
+       [2],
+       [5],
+       [8]])
+
+
+flatten
+- 다차원 array를 1차원 array로 변환
+
+>>>test_matrix = [[[1,2,3,4], [1,2,5,8]], [[1,2,3,4], [1,2,5,8]]]
+>>>np.array(test_matrix).flatten()
+array([1, 2, 3, 4, 1, 2, 5, 8, 1, 2, 3, 4, 1, 2, 5, 8])
+
+slicing
+>>>import numpy as np
+>>>test_exmaple = np.array([[1, 2, 3], [4.5, 5, 6]], int)
+>>>test_exmaple
+array([[1, 2, 3],
+       [4, 5, 6]])
+>>>test_exmaple[0][0]
+1
+>>>test_exmaple[0,0]
+1
+>>>test_exmaple[0,0] = 10 # Matrix 0,0 에 12 할당
+>>>test_exmaple
+array([[10,  2,  3],
+       [ 4,  5,  6]])
