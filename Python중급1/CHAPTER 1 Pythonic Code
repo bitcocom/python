@@ -467,14 +467,6 @@ array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
 
 >>>np.arange(0,5,0.5)
 array([0. , 0.5, 1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5])
-
->>>np.arange(30).reshape(5,6)
-array([[ 0,  1,  2,  3,  4,  5],
-       [ 6,  7,  8,  9, 10, 11],
-       [12, 13, 14, 15, 16, 17],
-       [18, 19, 20, 21, 22, 23],
-       [24, 25, 26, 27, 28, 29]])
-
 >>>np.arange(30).reshape(-1,5)
 array([[ 0,  1,  2,  3,  4],
        [ 5,  6,  7,  8,  9],
@@ -482,3 +474,137 @@ array([[ 0,  1,  2,  3,  4],
        [15, 16, 17, 18, 19],
        [20, 21, 22, 23, 24],
        [25, 26, 27, 28, 29]])
+>>> np.arange(30).reshape(5,6)
+array([[ 0,  1,  2,  3,  4,  5],
+       [ 6,  7,  8,  9, 10, 11],
+       [12, 13, 14, 15, 16, 17],
+       [18, 19, 20, 21, 22, 23],
+       [24, 25, 26, 27, 28, 29]])
+
+[ones, zeros and empty]
+- zeros – 0으로 가득찬 ndarray 생성
+- np.zeros(shape, dtype, order)
+
+>>> np.zeros(shape=(10,), dtype=np.int8)
+array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=int8)
+>>> np.zeros((2,5))
+array([[0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0.]])
+
+- ones – 1로 가득찬 ndarrary 생성
+- np.ones(shape, dtype, order)
+>>> np.ones(shape=(10,), dtype=np.int8)
+array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=int8)
+>>> np.ones((2,5))
+array([[1., 1., 1., 1., 1.],
+       [1., 1., 1., 1., 1.]])
+
+[something_like]
+- 기존 ndarray의 shape 크기 만큼 1, 0 또는 empty array를 반환
+>>> test_matrix=np.arange(30).reshape(5,6)
+>>> np.ones_like(test_matrix)
+array([[1, 1, 1, 1, 1, 1],
+       [1, 1, 1, 1, 1, 1],
+       [1, 1, 1, 1, 1, 1],
+       [1, 1, 1, 1, 1, 1],
+       [1, 1, 1, 1, 1, 1]])
+>>>
+[identity]
+- 단위 행렬(i 행렬)을 생성함
+- n -> number of rows
+>>> np.identity(n=3, dtype=np.int8)
+array([[1, 0, 0],
+       [0, 1, 0],
+       [0, 0, 1]], dtype=int8)
+
+>>> np.identity(5)
+array([[1., 0., 0., 0., 0.],
+       [0., 1., 0., 0., 0.],
+       [0., 0., 1., 0., 0.],
+       [0., 0., 0., 1., 0.],
+       [0., 0., 0., 0., 1.]])
+
+[ eye ]
+- 대각선이 1인 행렬, k값의 시작 index의 변경이 가능
+ >>> np.eye(N=3,M=5, dtype=np.int8)
+array([[1, 0, 0, 0, 0],
+       [0, 1, 0, 0, 0],
+       [0, 0, 1, 0, 0]], dtype=int8)
+
+>>> np.eye(3)
+array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]])
+
+>>> np.eye(3,5,k=2)  # k -> start index
+array([[0., 0., 1., 0., 0.],
+       [0., 0., 0., 1., 0.],
+       [0., 0., 0., 0., 1.]])
+
+[diag]
+- 대각 행렬의 값을 추출함
+>>> matrix=np.arange(9).reshape(3,3)
+>>> np.diag(matrix)
+array([0, 4, 8])
+
+>>> np.diag(matrix, k=1)
+array([1, 5])
+
+[sum]
+- ndarray의 element들 간의 합을 구함, list의 sum 기능과 동일
+>>> test_array=np.arange(1,11)
+>>> test_array
+array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10])
+>>> test_array.sum(dtype=np.float)
+55.0
+
+[axis]
+- 모든 operation function을 실행할 때, 기준이 되는 dimension 축
+>>> test_array.sum(axis=1) # axis=1 →
+array([10, 26, 42])
+
+>>> test_array.sum(axis=0) # axis=0↓
+array([15, 18, 21, 24])
+>>>
+
+[concatenate]
+- Numpy array를 합치는 함수
+>>> a=np.array([1,2,3])
+>>> b=np.array([2,3,4])
+>>> np.vstack((a,b))
+array([[1, 2, 3],
+       [2, 3, 4]])
+>>> a=np.array([[1],[2],[3]])
+>>> b=np.array([[2],[3],[4]])
+>>> np.hstack((a,b))
+array([[1, 2],
+       [2, 3],
+       [3, 4]])
+
+>>> a=np.array([[1,2,3]])
+>>> b=np.array([[2,3,4]])
+>>> np.concatenate((a,b), axis=0)
+array([[1, 2, 3],
+       [2, 3, 4]])
+
+>>> a=np.array([[1,2],[3,4]])
+>>> b=np.array([[5,6]])
+>>> np.concatenate((a,b.T), axis=1)
+array([[1, 2, 5],
+       [3, 4, 6]])
+
+[Operations b/t arrays]
+- Numpy는 array간의 기본적인 사칙 연산을 지원함
+>>> test_a=np.array([[1,2,3],[4,5,6]], float)
+>>> test_a+test_a
+array([[ 2.,  4.,  6.],
+       [ 8., 10., 12.]])
+
+>>> test_a-test_a
+array([[0., 0., 0.],
+       [0., 0., 0.]])
+
+>>> test_a*test_a
+array([[ 1.,  4.,  9.],
+       [16., 25., 36.]])
+>>>
