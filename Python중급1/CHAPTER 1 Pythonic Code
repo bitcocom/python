@@ -608,3 +608,107 @@ array([[0., 0., 0.],
 array([[ 1.,  4.,  9.],
        [16., 25., 36.]])
 >>>
+
+[Element-wise operations]
+- Array간 shape이 같을 때 일어나는 연산
+
+>>> import numpy as np
+>>> matrix_a=np.arange(1,13).reshape(3,4)
+>>> matrix_a
+array([[ 1,  2,  3,  4],
+       [ 5,  6,  7,  8],
+       [ 9, 10, 11, 12]])
+>>> matrix_a*matrix_a
+array([[  1,   4,   9,  16],
+       [ 25,  36,  49,  64],
+       [ 81, 100, 121, 144]])
+>>>
+
+[Dot product]
+- Matrix의 기본 연산
+- dot 함수 사용
+
+>>> test_a=np.arange(1,7).reshape(2,3)
+>>> test_b=np.arange(7,13).reshape(3,2)
+>>> test_a.dot(test_b)
+array([[ 58,  64],
+       [139, 154]])
+>>>
+
+[transpose]
+- transpose 또는 T attribute 사용
+
+>>> test_a=np.arange(1,7).reshape(2,3)
+>>> test_a
+array([[1, 2, 3],
+       [4, 5, 6]])
+
+
+>>> test_a.transpose()
+array([[1, 4],
+       [2, 5],
+       [3, 6]])
+>>> test_a.T.dot(test_a)
+array([[17, 22, 27],
+       [22, 29, 36],
+       [27, 36, 45]])
+>>> test_a.T
+array([[1, 4],
+       [2, 5],
+       [3, 6]])
+>>>
+
+[broadcasting]
+- Shape이 다른 배열 간 연산을 지원하는 기능
+>>> test_matrix=np.array([[1,2,3],[4,5,6]], float)
+>>> scalar=3
+>>> test_matrix+scalar
+array([[4., 5., 6.],
+       [7., 8., 9.]])
+>>>
+
+>>> test_matrix=np.array([[1,2,3],[4,5,6]], float)
+>>> scalar=3
+>>> test_matrix+scalar
+array([[4., 5., 6.],
+       [7., 8., 9.]])
+>>> test_matrix-scalar
+array([[-2., -1.,  0.],
+       [ 1.,  2.,  3.]])
+>>> test_matrix*scalar
+array([[ 3.,  6.,  9.],
+       [12., 15., 18.]])
+
+>>> test_matrix*5
+array([[ 5., 10., 15.],
+       [20., 25., 30.]])
+>>> test_matrix/5
+array([[0.2, 0.4, 0.6],
+       [0.8, 1. , 1.2]])
+>>> test_matrix**2
+array([[ 1.,  4.,  9.],
+       [16., 25., 36.]])
+>>> test_matrix=np.arange(1,13).reshape(4,3)
+>>> test_vector=np.arange(10,40,10)
+>>> test_matrix+test_vector
+array([[11, 22, 33],
+       [14, 25, 36],
+       [17, 28, 39],
+       [20, 31, 42]])
+>>>
+
+[All & Any]
+- Array의 데이터 전부(and) 또는 일부(or)가 조건에 만족 여부 반환
+>>> a=np.arange(10)
+>>> a>5
+array([False, False, False, False, False, False,  True,  True,  True,
+        True])
+>>>
+
+>>> np.any(a>5), np.any(a<0) # any -> 하나라도 조건에 만족한다면 true
+(True, False)
+>>>
+
+>>> np.all(a>5), np.all(a<10) # all -> 모두가 조건에 만족한다면 true
+(False, True)
+>>>
