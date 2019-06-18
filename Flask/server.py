@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request
 import json
 import urllib.request
+import csv
 
 app = Flask(__name__)
 
@@ -12,6 +13,15 @@ def index():
 
 @app.route("/go", methods=['GET', 'POST'])
 def get_datePrice():
+    csv.register_dialect(
+        'mydialect',
+        delimiter=',',
+        quotechar='"',
+        doublequote=True,
+        skipinitialspace=True,
+        lineterminator='\r\n',
+        quoting=csv.QUOTE_MINIMAL)
+
     url = "http://www.kamis.or.kr/service/price/xml.do?action=periodProductList&p_productclscode=01&p_startday=2015-10-01&p_endday=2015-12-01&p_itemcategorycode=200&p_itemcode=211&p_cert_key=9f1eafec-6bfe-4b7f-a0e0-0de934a470f9&p_cert_id=bitcocom1&p_returntype=json"
     request = urllib.request.Request(url)
     try:
@@ -31,6 +41,11 @@ def get_datePrice():
                         indict['yyyy']=data
                         indict['price'] = element['price']
                         datePrice.append(indict)
+
+                with open('test4.csv', 'w', newline='') as mycsvfile:
+                    thedatawriter = csv.writer(mycsvfile, dialect='mydialect')
+                    for row in datePrice:
+                        thedatawriter.writerow(row)
                 return json.dumps(datePrice)
         else:
             print("Error Code:" + rescode)
