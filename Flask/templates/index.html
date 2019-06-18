@@ -7,17 +7,30 @@
    <script type="text/javascript">
        $(document).ready(function(){
            $('#btn').click(function(){
+               p_countrycode=$('#p_countrycode option:selected').val();
                $.ajax({
                  url : '/go',
-                 type : 'get',
+                 type : 'POST',
+                 data : {p_countrycode:p_countrycode},
                  dataType : 'json',
                  success : resultData,
                  error : function(){ alert("실패");   }
                });
              });
+            $('#btn1').click(function(){
+               stn_id=$('#p_w option:selected').val();
+               $.ajax({
+                 url : '/gostn_id',
+                 type : 'POST',
+                 data : {stn_id:stn_id},
+                 dataType : 'json',
+                 success : resultData1,
+                 error : function(){ alert("실패");   }
+               });
+             });
         });
         function resultData(data){
-           var html="<table border='1'>";
+           var html='<table width="50%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
            html+="<tr>";
            html+="<td>날짜</td>";
            html+="<td>가격</td>";
@@ -32,11 +45,86 @@
             $('#tblList').empty();
             $('#tblList').append(html);
         }
+
+       function resultData1(data){
+           var html='<table width="100%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
+           html+="<tr>";
+           html+="<td>날짜</td>";
+           html+="<td>평균기온</td>";
+           html+="<td>최저기온</td>";
+           html+="<td>최고기온</td>";
+           html+="<td>강수량</td>";
+           html+="</tr>";
+           $.each(data, function(index, obj){
+               html+="<tr>";
+               html+="<td>"+obj.TM+"</td>";
+               html+="<td>"+obj.AVG_TA+"</td>";
+               html+="<td>"+obj.MIN_TA+"</td>";
+               html+="<td>"+obj.MAX_TA+"</td>";
+               html+="<td>"+obj.SUM_RN+"</td>";
+               html+="</tr>";
+            })
+            html+="</table>";
+            $('#tblList1').empty();
+            $('#tblList1').append(html);
+        }
     </script>
 </head>
 <body>
-  배추가격 정보 가져오기
+  <hr/>
+  날씨정보 및 상품가격 정보 가져오기(공공데이터)
+  <hr/>
+    <select id="p_w">
+      <option selected>날씨정보(지역선택)</option>
+      <option value="108">서울</option>
+      <option value="159">부산</option>
+      <option value="143">대구</option>
+      <option value="112">인천</option>
+      <option value="156">광주</option>
+      <option value="133">대전</option>
+      <option value="152">울산</option>
+      <option value="119">수원</option>
+      <option value="101">춘천</option>
+      <option value="131">청주</option>
+      <option value="146">전주</option>
+      <option value="138">포항</option>
+      <option value="184">제주</option>
+      <option value="532">의정부</option>
+      <option value="256">순천</option>
+      <option value="136">안동</option>
+      <option value="155">창원</option>
+      <option value="549">용인</option>
+  </select>
+  <button id="btn1">클릭</button>
+  <select id="p_countrycode">
+      <option selected>가격정보(지역선택)</option>
+      <option value="1101">서울</option>
+      <option value="2100">부산</option>
+      <option value="2200">대구</option>
+      <option value="2300">인천</option>
+      <option value="2401">광주</option>
+      <option value="2501">대전</option>
+      <option value="2601">울산</option>
+      <option value="3111">수원</option>
+      <option value="3211">춘천</option>
+      <option value="3311">청주</option>
+      <option value="3511">전주</option>
+      <option value="3711">포항</option>
+      <option value="3911">제주</option>
+      <option value="3113">의정부</option>
+      <option value="3613">순천</option>
+      <option value="3714">안동</option>
+      <option value="3814">창원</option>
+      <option value="3145">용인</option>
+  </select>
   <button id="btn">클릭</button>
-  <div id="tblList"></div>
+  <hr/>
+
+  <table width="80%" cellpadding="5" cellspacing="0" border="0" align="center" style="border-collapse:collapse; border:1px gray solid;">
+      <tr>
+          <td valign="top"><div id="tblList1"></div></td>
+          <td valign="top"><div id="tblList"></div></td>
+      </tr>
+  </table>
 </body>
 </html>
