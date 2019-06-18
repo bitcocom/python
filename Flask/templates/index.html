@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <script type="text/javascript">
+       $(document).ready(function(){
+           $('#btn').click(function(){
+               $.ajax({
+                 url : '/go',
+                 type : 'get',
+                 dataType : 'json',
+                 success : resultData,
+                 error : function(){ alert("실패");   }
+               });
+             });
+        });
+        function resultData(data){
+           var html="<table border='1'>";
+           html+="<tr>";
+           html+="<td>날짜</td>";
+           html+="<td>가격</td>";
+           html+="</tr>";
+           $.each(data, function(index, obj){
+               html+="<tr>";
+               html+="<td>"+obj.yyyy+"</td>";
+               html+="<td>"+obj.price+"</td>";
+               html+="</tr>";
+            })
+            html+="</table>";
+            $('#tblList').empty();
+            $('#tblList').append(html);
+        }
+    </script>
 </head>
 <body>
-  Hello Flask Web Server~~
+  배추가격 정보 가져오기
+  <button id="btn">클릭</button>
+  <div id="tblList"></div>
 </body>
 </html>
