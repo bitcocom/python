@@ -17,6 +17,7 @@ def index():
 
 @app.route("/go", methods=['POST'])
 def get_datePrice():
+    datePrice.clear()
     p_countrycode=req.form['p_countrycode']
     csv.register_dialect(
         'mydialect',
@@ -37,7 +38,7 @@ def get_datePrice():
             result = response_body.decode('utf-8')
             js = json.loads(result)
             if js:
-                datePrice = []
+                #datePrice = []
                 point = js["data"]
                 for element in point["item"]:
                     indict = {}
@@ -47,14 +48,6 @@ def get_datePrice():
                         indict['price'] = element['price'].replace(',','')
                         datePrice.append(indict)
 
-                with open('price'+p_countrycode+'.csv', 'w', newline='') as mycsvfile:
-                    thedatawriter = csv.writer(mycsvfile, dialect='mydialect')
-                    for row in datePrice:
-                        d=[]
-                        d.append(row['yyyy'])
-                        d.append(int(row['price']))
-                        thedatawriter.writerow(d)
-
                 return json.dumps(datePrice)
         else:
             print("Error Code:" + rescode)
@@ -63,6 +56,7 @@ def get_datePrice():
 
 @app.route("/gostn_id", methods=['POST'])
 def get_datestn_id():
+    dataList.clear()
     stnIds=req.form['stn_id']
     csv.register_dialect(
         'mydialect',
@@ -84,7 +78,7 @@ def get_datestn_id():
             js = json.loads(result)
             if js:
                 weather=js[3]['info']
-                dataList=[]
+                #dataList=[]
                 for data in weather :
                     dict_list = dict()
                     TM = data['TM'].replace('-','')
@@ -92,36 +86,62 @@ def get_datestn_id():
                     MIN_TA = data['MIN_TA']
                     MAX_TA = data['MAX_TA']
                     SUM_RN = data.get('SUM_RN', 0)
-                    dict_list['TM']=TM
+                    dict_list['yyyy']=TM
                     dict_list['AVG_TA'] = AVG_TA
                     dict_list['MIN_TA'] = MIN_TA
                     dict_list['MAX_TA'] = MAX_TA
                     dict_list['SUM_RN'] = SUM_RN
                     dataList.append(dict_list)
 
-                with open('weather'+stnIds+'.csv', 'w', newline='') as mycsvfile:
-                    thedatawriter = csv.writer(mycsvfile, dialect='mydialect')
-                    for row in dataList:
-                        d=[]
-                        d.append(row['TM'])
-                        d.append(row['AVG_TA'])
-                        d.append(row['MIN_TA'])
-                        d.append(row['MAX_TA'])
-                        d.append(row['SUM_RN'])
-                        thedatawriter.writerow(d)
-
                 return json.dumps(dataList)
         else:
             print("Error Code:" + rescode)
     except:
         print("Exception Code:" + rescode)
-'''
-@app.route("/merge", methods=['get'])
+
+@app.route("/merge", methods=['POST'])
 def dataMerge() :
+    p_countrycode = req.form['p_countrycode']
+    csv.register_dialect(
+        'mydialect',
+        delimiter=',',
+        quotechar='"',
+        doublequote=True,
+        skipinitialspace=True,
+        lineterminator='\r\n',
+        quoting=csv.QUOTE_MINIMAL)
+
+    tmp = []
+    for row in dataList:
+        price=0
+        for row1 in datePrice:
+            if  row['yyyy'] == row1['yyyy']:
+                row['price']=row1['price']
+                price=row1['price']
+                break
+            else :
+                row['price']=0
+        tmp.append(row)
+
     i=0
-    while i<len(datePrice) :
-        
-        dataList['price']=datePrice[i]['price']
-'''
+    while i<len(tmp) :
+       if tmp[i]['price']==0 :
+            tmp[i]['price']=tmp[i-1]['price']
+       i=i+1
+
+    with open('final' + p_countrycode + '.csv', 'w', newline='') as mycsvfile:
+        thedatawriter = csv.writer(mycsvfile, dialect='mydialect')
+        for row in tmp:
+            d = []
+            d.append(row['yyyy'])
+            d.append(row['AVG_TA'])
+            d.append(row['MIN_TA'])
+            d.append(row['MAX_TA'])
+            d.append(row['SUM_RN'])
+            d.append(row['price'])
+            thedatawriter.writerow(d)
+
+    return json.dumps(tmp)
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,50 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
    <script type="text/javascript">
        $(document).ready(function(){
-           $('#btn').click(function(){
-               p_countrycode=$('#p_countrycode option:selected').val();
-               $.ajax({
-                 url : '/go',
-                 type : 'POST',
-                 data : {p_countrycode:p_countrycode},
-                 dataType : 'json',
-                 success : resultData,
-                 error : function(){ alert("실패");   }
-               });
-             });
-            $('#btn1').click(function(){
+            $('#btn').click(function(){
                stn_id=$('#p_w option:selected').val();
                $.ajax({
                  url : '/gostn_id',
                  type : 'POST',
                  data : {stn_id:stn_id},
                  dataType : 'json',
+                 success : resultData,
+                 error : function(){ alert("실패");   }
+               });
+             });
+
+           $('#btn1').click(function(){
+               p_countrycode=$('#p_countrycode option:selected').val();
+               $.ajax({
+                 url : '/go',
+                 type : 'POST',
+                 data : {p_countrycode:p_countrycode},
+                 dataType : 'json',
                  success : resultData1,
                  error : function(){ alert("실패");   }
                });
              });
-        });
-        function resultData(data){
-           var html='<table width="50%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
-           html+="<tr>";
-           html+="<td>날짜</td>";
-           html+="<td>가격</td>";
-           html+="</tr>";
-           $.each(data, function(index, obj){
-               html+="<tr>";
-               html+="<td>"+obj.yyyy+"</td>";
-               html+="<td>"+obj.price+"</td>";
-               html+="</tr>";
-            })
-            html+="</table>";
-            $('#tblList').empty();
-            $('#tblList').append(html);
-        }
 
-       function resultData1(data){
+           $('#merge').click(function(){
+               p_countrycode=$('#p_countrycode option:selected').val();
+               $.ajax({
+                 url : '/merge',
+                 type : 'POST',
+                 data : {p_countrycode:p_countrycode},
+                 dataType : 'json',
+                 success : resultData2,
+                 error : function(){ alert("실패");   }
+               });
+             });
+        });
+
+      function resultData(data){
            var html='<table width="100%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
            html+="<tr>";
            html+="<td>날짜</td>";
@@ -57,17 +54,60 @@
            html+="</tr>";
            $.each(data, function(index, obj){
                html+="<tr>";
-               html+="<td>"+obj.TM+"</td>";
+               html+="<td>"+obj.yyyy+"</td>";
                html+="<td>"+obj.AVG_TA+"</td>";
                html+="<td>"+obj.MIN_TA+"</td>";
                html+="<td>"+obj.MAX_TA+"</td>";
                html+="<td>"+obj.SUM_RN+"</td>";
                html+="</tr>";
-            })
+            });
+            html+="</table>";
+            $('#tblList').empty();
+            $('#tblList').append(html);
+        }
+
+        function resultData1(data){
+           var html='<table width="50%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
+           html+="<tr>";
+           html+="<td>날짜</td>";
+           html+="<td>가격</td>";
+           html+="</tr>";
+           $.each(data, function(index, obj){
+               html+="<tr>";
+               html+="<td>"+obj.yyyy+"</td>";
+               html+="<td>"+obj.price+"</td>";
+               html+="</tr>";
+            });
             html+="</table>";
             $('#tblList1').empty();
             $('#tblList1').append(html);
         }
+
+       function resultData2(data){
+           var html='<table width="100%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
+           html+="<tr>";
+           html+="<td>날짜</td>";
+           html+="<td>평균기온</td>";
+           html+="<td>최저기온</td>";
+           html+="<td>최고기온</td>";
+           html+="<td>강수량</td>";
+           html+="<td>가격</td>";
+           html+="</tr>";
+           $.each(data, function(index, obj){
+               html+="<tr>";
+               html+="<td>"+obj.yyyy+"</td>";
+               html+="<td>"+obj.AVG_TA+"</td>";
+               html+="<td>"+obj.MIN_TA+"</td>";
+               html+="<td>"+obj.MAX_TA+"</td>";
+               html+="<td>"+obj.SUM_RN+"</td>";
+               html+="<td>"+obj.price+"</td>";
+               html+="</tr>";
+            });
+            html+="</table>";
+            $('#tblList').empty();
+            $('#tblList').append(html);
+        }
+
     </script>
 </head>
 <body>
@@ -96,7 +136,7 @@
       <option value="155">창원</option>
       <option value="549">용인</option>
   </select>
-  <button id="btn1">클릭</button>
+  <input type="button" id="btn" value="클릭"/>
 
   [농산물유통정보:https://www.kamis.or.kr]
   <select id="p_countrycode">
@@ -120,13 +160,14 @@
       <option value="3814">창원</option>
       <option value="3145">용인</option>
   </select>
-  <button id="btn">클릭</button>
+  <input type="button" id="btn1" value="클릭"/>
+  <input type="button" id="merge" value="MERGE"/>
   <hr/>
 
   <table width="80%" cellpadding="5" cellspacing="0" border="0" align="center" style="border-collapse:collapse; border:1px gray solid;">
       <tr>
-          <td valign="top"><div id="tblList1"></div></td>
           <td valign="top"><div id="tblList"></div></td>
+          <td valign="top"><div id="tblList1"></div></td>
       </tr>
   </table>
 </body>
