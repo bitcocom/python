@@ -19,16 +19,9 @@ def index():
 def get_datePrice():
     datePrice.clear()
     p_countrycode=req.form['p_countrycode']
-    csv.register_dialect(
-        'mydialect',
-        delimiter=',',
-        quotechar='"',
-        doublequote=True,
-        skipinitialspace=True,
-        lineterminator='\r\n',
-        quoting=csv.QUOTE_MINIMAL)
-
-    url = "http://www.kamis.or.kr/service/price/xml.do?action=periodProductList&p_productclscode=01&p_startday=2015-10-01&p_endday=2015-12-01&p_itemcategorycode=200&p_itemcode=211&p_cert_key=9f1eafec-6bfe-4b7f-a0e0-0de934a470f9&p_cert_id=bitcocom1&p_returntype=json&p_countrycode="+p_countrycode
+    p_startday = req.form['date3']
+    p_endday = req.form['date4']
+    url = "http://www.kamis.or.kr/service/price/xml.do?action=periodProductList&p_productclscode=01&p_startday="+p_startday+"&p_endday="+p_endday+"&p_itemcategorycode=200&p_itemcode=211&p_cert_key=9f1eafec-6bfe-4b7f-a0e0-0de934a470f9&p_cert_id=bitcocom1&p_returntype=json&p_countrycode="+p_countrycode
     request = urllib.request.Request(url)
     try:
         response = urllib.request.urlopen(request)
@@ -58,16 +51,9 @@ def get_datePrice():
 def get_datestn_id():
     dataList.clear()
     stnIds=req.form['stn_id']
-    csv.register_dialect(
-        'mydialect',
-        delimiter=',',
-        quotechar='"',
-        doublequote=True,
-        skipinitialspace=True,
-        lineterminator='\r\n',
-        quoting=csv.QUOTE_MINIMAL)
-
-    url = "http://data.kma.go.kr/apiData/getData?type=json&dataCd=ASOS&dateCd=DAY&startDt=20151001&endDt=20151201&schListCnt=100&pageIndex=1&apiKey=oHsSmyZgv6U6120Oq257pCWnaK374OimRkgXiKzYoQ0Xxtqcfs3rw5O6iQOE9Rpt&stnIds="+stnIds
+    startDt = req.form['date1'].replace('-','')
+    endDt = req.form['date2'].replace('-','')
+    url = "http://data.kma.go.kr/apiData/getData?type=json&dataCd=ASOS&dateCd=DAY&startDt="+startDt+"&endDt="+endDt+"&schListCnt=100&pageIndex=1&apiKey=oHsSmyZgv6U6120Oq257pCWnaK374OimRkgXiKzYoQ0Xxtqcfs3rw5O6iQOE9Rpt&stnIds="+stnIds
     request = urllib.request.Request(url)
     try:
         response = urllib.request.urlopen(request)
@@ -131,6 +117,9 @@ def dataMerge() :
 
     with open('final' + p_countrycode + '.csv', 'w', newline='') as mycsvfile:
         thedatawriter = csv.writer(mycsvfile, dialect='mydialect')
+        title=['year','avgTemp','minTemp','maxTemp','rainFall','avgPrice']
+        thedatawriter.writerow(title)
+        #year,avgTemp,minTemp,maxTemp,rainFall,avgPrice
         for row in tmp:
             d = []
             d.append(row['yyyy'])

@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-   <script type="text/javascript">
+    <script type="text/javascript">
        $(document).ready(function(){
             $('#btn').click(function(){
-               stn_id=$('#p_w option:selected').val();
+               stn_id=$('#stn_id option:selected').val();
+               date1=$('#date1').val()
+               date2=$('#date2').val()
                $.ajax({
                  url : '/gostn_id',
                  type : 'POST',
-                 data : {stn_id:stn_id},
+                 data : {stn_id:stn_id ,date1:date1, date2:date2},
                  dataType : 'json',
                  success : resultData,
                  error : function(){ alert("실패");   }
@@ -20,10 +22,12 @@
 
            $('#btn1').click(function(){
                p_countrycode=$('#p_countrycode option:selected').val();
+               date3=$('#date3').val()
+               date4=$('#date4').val()
                $.ajax({
                  url : '/go',
                  type : 'POST',
-                 data : {p_countrycode:p_countrycode},
+                 data : {p_countrycode:p_countrycode, date3:date3, date4:date4},
                  dataType : 'json',
                  success : resultData1,
                  error : function(){ alert("실패");   }
@@ -45,7 +49,7 @@
 
       function resultData(data){
            var html='<table width="100%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
-           html+="<tr>";
+           html+="<tr align='center' bgcolor='skyblue'>";
            html+="<td>날짜</td>";
            html+="<td>평균기온</td>";
            html+="<td>최저기온</td>";
@@ -53,7 +57,7 @@
            html+="<td>강수량</td>";
            html+="</tr>";
            $.each(data, function(index, obj){
-               html+="<tr>";
+               html+="<tr align='center'>";
                html+="<td>"+obj.yyyy+"</td>";
                html+="<td>"+obj.AVG_TA+"</td>";
                html+="<td>"+obj.MIN_TA+"</td>";
@@ -68,12 +72,12 @@
 
         function resultData1(data){
            var html='<table width="50%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
-           html+="<tr>";
+           html+="<tr align='center' bgcolor='skyblue'>";
            html+="<td>날짜</td>";
            html+="<td>가격</td>";
            html+="</tr>";
            $.each(data, function(index, obj){
-               html+="<tr>";
+               html+="<tr align='center'>";
                html+="<td>"+obj.yyyy+"</td>";
                html+="<td>"+obj.price+"</td>";
                html+="</tr>";
@@ -85,7 +89,7 @@
 
        function resultData2(data){
            var html='<table width="100%" cellpadding="5" cellspacing="0" border="1" align="center" style="border-collapse:collapse; border:1px gray solid;">';
-           html+="<tr>";
+           html+="<tr align='center' bgcolor='skyblue'>";
            html+="<td>날짜</td>";
            html+="<td>평균기온</td>";
            html+="<td>최저기온</td>";
@@ -94,7 +98,7 @@
            html+="<td>가격</td>";
            html+="</tr>";
            $.each(data, function(index, obj){
-               html+="<tr>";
+               html+="<tr align='center'>";
                html+="<td>"+obj.yyyy+"</td>";
                html+="<td>"+obj.AVG_TA+"</td>";
                html+="<td>"+obj.MIN_TA+"</td>";
@@ -111,11 +115,15 @@
     </script>
 </head>
 <body>
-  <hr/>
-  공공데이터활용 가격 예측 밎 물가 동향 비교분석
-  <hr/>
-   [기상자료개방포털:https://data.kma.go.kr]
-    <select id="p_w">
+  <table align="center">
+  <tr align="center">
+  <td colspan="3" bgcolor="skyblue" >
+      <b>공공데이터활용 가격 예측 밎 물가 동향 비교분석 데이터 수집</b>
+  </td>
+  </tr>
+    <tr>
+    <td>
+    <select id="stn_id">
       <option selected>날씨정보(지역선택)</option>
       <option value="108">서울</option>
       <option value="159">부산</option>
@@ -136,9 +144,10 @@
       <option value="155">창원</option>
       <option value="549">용인</option>
   </select>
+  <input type="date" id="date1">~<input type="date" id="date2">
   <input type="button" id="btn" value="클릭"/>
-
-  [농산물유통정보:https://www.kamis.or.kr]
+  </td>
+  <td>
   <select id="p_countrycode">
       <option selected>가격정보(지역선택)</option>
       <option value="1101">서울</option>
@@ -160,11 +169,16 @@
       <option value="3814">창원</option>
       <option value="3145">용인</option>
   </select>
-  <input type="button" id="btn1" value="클릭"/>
-  <input type="button" id="merge" value="MERGE"/>
+      <input type="date" id="date3">~<input type="date" id="date4">
+      <input type="button" id="btn1" value="클릭"/>
+  </td>
+  <td>
+  <input type="button" id="merge" value="병합(EXCEL/CSV)"/>
+  </td>
+  </tr>
+  </table>
   <hr/>
-
-  <table width="80%" cellpadding="5" cellspacing="0" border="0" align="center" style="border-collapse:collapse; border:1px gray solid;">
+  <table width="80%" cellpadding="5" cellspacing="0" border="0" align="center" style="border-collapse:collapse; border:0px gray solid;">
       <tr>
           <td valign="top"><div id="tblList"></div></td>
           <td valign="top"><div id="tblList1"></div></td>
