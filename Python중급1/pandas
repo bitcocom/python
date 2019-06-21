@@ -1,0 +1,249 @@
+[pandas]
+구조화된데이터의처리를지원하는Python 라이브러리 Python계의엑셀!
+-구조화된데이터의처리를지원하는Python 라이브러리
+-고성능Array 계산라이브러리인Numpy와통합하여, 강력한“스프레드시트” 처리기능을제공
+-인덱싱, 연산용함수, 전처리함수등을제공함
+
+[데이터로딩]
+>>> import pandas as pd
+# Data URL
+>>> data_url='https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data'
+# csv타입 데이터 로드, separate는 빈공간으로 지정하고, column은 없음
+>>> df_data=pd.read_csv(data_url, sep='\s+',header=None)
+>>> df_data.head()  # 처음 다섯줄 출력
+        0     1     2   3      4   ...      9     10      11    12    13
+0  0.00632  18.0  2.31   0  0.538  ...   296.0  15.3  396.90  4.98  24.0
+1  0.02731   0.0  7.07   0  0.469  ...   242.0  17.8  396.90  9.14  21.6
+2  0.02729   0.0  7.07   0  0.469  ...   242.0  17.8  392.83  4.03  34.7
+3  0.03237   0.0  2.18   0  0.458  ...   222.0  18.7  394.63  2.94  33.4
+4  0.06905   0.0  2.18   0  0.458  ...   222.0  18.7  396.90  5.33  36.2
+
+[5 rows x 14 columns]
+>>>
+
+[Pandas의 구성]
+Series
+ - DataFrame 중 하나의 Column에 해당하는 데이터의 모음 Object
+DataFrame
+ - Data Table 전체를 포함하는Object
+
+>>> from pandas import Series,DataFrame
+>>> import pandas as pd
+>>> list_data=[1,2,3,4,5]
+>>> example_obj=Series(data=list_data)
+>>> example_obj
+0    1
+1    2
+2    3
+3    4
+4    5
+dtype: int64
+
+
+>>> list_name=['a','b','c','d','e']
+>>> example_obj=Series(data=list_data,index=list_name)
+>>> example_obj
+a    1
+b    2
+c    3
+d    4
+e    5
+dtype: int64
+>>>
+
+>>> import numpy as np
+>>> dict_data={'a':1,'b':2,'c':3,'d':4,'e':5}
+>>> example_obj=Series(dict_data, dtype=np.float32, name='example_data')
+>>> example_obj
+a    1.0
+b    2.0
+c    3.0
+d    4.0
+e    5.0
+Name: example_data, dtype: float32
+>>>
+>>> example_obj['a']  #data index에접근하기
+1.0
+>>> example_obj['a']=3.2 #data index에값할당하기
+>>> example_obj
+a    3.2
+b    2.0
+c    3.0
+d    4.0
+e    5.0
+Name: example_data, dtype: float32
+>>>
+
+>>> example_obj.values
+array([3.2, 2. , 3. , 4. , 5. ], dtype=float32)
+>>> example_obj.index
+Index(['a', 'b', 'c', 'd', 'e'], dtype='object')
+
+>>> example_obj.name='number'
+>>> example_obj.index.name="alphabet"
+>>> example_obj
+
+alphabet
+a    3.2
+b    2.0
+c    3.0
+d    4.0
+e    5.0
+Name: number, dtype: float32
+>>>
+
+[Dataframe Overview]
+>>>raw_data={'first_name':['Jason','Molly','Tina','Jake','Amy'],
+'last_name':['Miller','Jacobson','Ali','Milner','Cooze'],
+'age' :[42,52,36,24,73],'city':['San Francisco','Baltimore','Miami','Douglas','Bostone']}
+>>> df=pd.DataFrame(raw_data,columns=['first_name','last_name','age','city'])
+>>> df
+  first_name last_name  age           city
+0      Jason    Miller   42  San Francisco
+1      Molly  Jacobson   52      Baltimore
+2       Tina       Ali   36          Miami
+3       Jake    Milner   24        Douglas
+4       Amy     Cooze   73        Bostone
+>>>
+
+>>> DataFrame(raw_data, columns=['age','city'])  #column 선택
+   age           city
+0   42  San Francisco
+1   52      Baltimore
+2   36          Miami
+3   24        Douglas
+4   73        Bostone
+>>>
+>>> df=DataFrame(raw_data, columns=['first_name','last_name','age','city','debt'])
+  first_name last_name  age           city debt
+0      Jason    Miller   42  San Francisco  NaN
+1      Molly  Jacobson   52      Baltimore  NaN
+2       Tina       Ali   36          Miami  NaN
+3       Jake    Milner   24        Douglas  NaN
+4        Amy     Cooze   73        Bostone  NaN
+>>>
+
+
+>>> df.first_name   #column 선택 – series 추출
+0    Jason
+1    Molly
+2     Tina
+3     Jake
+4      Amy
+Name: first_name, dtype: object
+
+>>> df['first_name'] #column 선택 – series 추출
+0    Jason
+1    Molly
+2     Tina
+3     Jake
+4      Amy
+Name: first_name, dtype: object
+>>>
+
+>>> df.loc[1]
+first_name        Molly
+last_name      Jacobson
+age                  52
+city          Baltimore
+Name: 1, dtype: object
+>>>
+
+>>> df['age'].iloc[1:]
+1    52
+2    36
+3    24
+4    73
+Name: age, dtype: int64
+>>>
+
+>>> s=pd.Series(np.nan, index=[49,48,47,46,45,1,2,3,4,5])
+>>> s
+49   NaN
+48   NaN
+47   NaN
+46   NaN
+45   NaN
+1    NaN
+2    NaN
+3    NaN
+4    NaN
+5    NaN
+dtype: float64
+
+>>> s.loc[:3]  #loc은 index 이름
+49   NaN
+48   NaN
+47   NaN
+46   NaN
+45   NaN
+1    NaN
+2    NaN
+3    NaN
+dtype: float64
+
+>>> s.iloc[:3] #iloc은 index number
+49   NaN
+48   NaN
+47   NaN
+dtype: float64
+>>>
+
+>>> df=DataFrame(raw_data, columns=['first_name','last_name','age','city','debt'])
+>>> df.debt = df.age > 40
+>>> df
+  first_name last_name  age           city   debt
+0      Jason    Miller   42  San Francisco   True
+1      Molly  Jacobson   52      Baltimore   True
+2       Tina       Ali   36          Miami  False
+3       Jake    Milner   24        Douglas  False
+4        Amy     Cooze   73        Bostone   True
+>>>
+
+>>> df.T
+                        0          1      2        3        4
+first_name          Jason      Molly   Tina     Jake      Amy
+last_name          Miller   Jacobson    Ali   Milner    Cooze
+age                    42         52     36       24       73
+city        San Francisco  Baltimore  Miami  Douglas  Bostone
+debt                 True       True  False    False     True
+>>> df.values
+array([['Jason', 'Miller', 42, 'San Francisco', True],
+       ['Molly', 'Jacobson', 52, 'Baltimore', True],
+       ['Tina', 'Ali', 36, 'Miami', False],
+       ['Jake', 'Milner', 24, 'Douglas', False],
+       ['Amy', 'Cooze', 73, 'Bostone', True]], dtype=object)
+>>> df.to_csv()
+',first_name,last_name,age,city,debt\n0,Jason,Miller,42,San Francisco,True\n1,Molly,Jacobson,52,Baltimore,True\n2,Tina,Ali,36,Miami,False\n3,Jake,Milner,24,Douglas,False\n4,Amy,Cooze,73,Bostone,True\n'
+>>>
+
+>>> del df['debt']
+>>> df
+  first_name last_name  age           city
+0      Jason    Miller   42  San Francisco
+1      Molly  Jacobson   52      Baltimore
+2       Tina       Ali   36          Miami
+3       Jake    Milner   24        Douglas
+4        Amy     Cooze   73        Bostone
+>>>
+
+>>> pop={'Nevada' :{2001:2.4, 2002:2.9},'Ohio':{2000:1.5,2001:1.7, 2002:3.6}}
+>>> DataFrame(pop)
+      Nevada  Ohio
+2000     NaN   1.5
+2001     2.4   1.7
+2002     2.9   3.6
+>>>
+
+>>> import xlrd
+>>> df = pd.read_excel("C://data.xlsx")
+>>> df.head()
+   account                         name  ...       Feb    Mar
+0   211829   Kerluke, Koepp and Hilpert  ...     62000  35000
+1   320563               Walter-Trantow  ...     45000  35000
+2   648336   Bashirian, Kunde and Price  ...    120000  35000
+3   109996  D'Amore, Gleichner and Bode  ...    120000  10000
+4   121213                Bauch-Goldner  ...    120000  35000
+
+[5 rows x 9 columns]
+>>>
