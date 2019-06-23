@@ -848,4 +848,83 @@ array([ 1.,  4., 16., 16.,  4.])
 4  0.06905   0.0  2.18   0  0.458  ...   222.0  18.7  396.90  5.33  36.2
 
 [5 rows x 14 columns]
+
+>>> df['account'].head(3)
+0    211829
+1    320563
+2    648336
+Name: account, dtype: int64
+>>> df[['account','street','state']].head(3)
+   account                                street          state
+0   211829                    34456 Sean Highway          Texas
+1   320563                     1311 Alvis Tunnel  NorthCarolina
+2   648336  62184 Schamberger Underpass Apt. 231           Iowa
+
+>>> df['account'][:3]
+0    211829
+1    320563
+2    648336
+Name: account, dtype: int64
+
+>>> account_serires=df['account']
+>>> account_serires[:3]
+
+>>> account_serires[[0,1,2]]
+0    211829
+1    320563
+2    648336
+
+>>> account_serires[account_serires<25000]
+Series([], Name: account, dtype: int64)
+>>> account_serires
+0    211829
+1    320563
+2    648336
+3    109996
+4    121213
+
 >>>
+
+>>> df.index=df['account']
+>>> del df['account']
+>>> df.head()
+                                name  ...      Mar
+account                               ...
+211829    Kerluke, Koepp and Hilpert  ...    35000
+320563                Walter-Trantow  ...    35000
+648336    Bashirian, Kunde and Price  ...    35000
+109996   D'Amore, Gleichner and Bode  ...    10000
+121213                 Bauch-Goldner  ...    35000
+
+[5 rows x 8 columns]
+
+>>> df[['name','street']][:2]
+                               name              street
+account
+211829   Kerluke, Koepp and Hilpert  34456 Sean Highway
+320563               Walter-Trantow   1311 Alvis Tunnel
+
+>>> df.loc[[211829, 320563],['name','street']]
+                               name              street
+account
+211829   Kerluke, Koepp and Hilpert  34456 Sean Highway
+320563               Walter-Trantow   1311 Alvis Tunnel
+>>>
+
+>>> df.index=list(range(0,5))
+>>> df.head()
+                          name  ...      Mar
+0   Kerluke, Koepp and Hilpert  ...    35000
+1               Walter-Trantow  ...    35000
+2   Bashirian, Kunde and Price  ...    35000
+3  D'Amore, Gleichner and Bode  ...    10000
+4                Bauch-Goldner  ...    35000
+
+[5 rows x 8 columns]
+>>>
+
+>>>df.iloc[:2, :2]
+                               name              street
+account
+211829   Kerluke, Koepp and Hilpert  34456 Sean Highway
+320563               Walter-Trantow   1311 Alvis Tunnel
