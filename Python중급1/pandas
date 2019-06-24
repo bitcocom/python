@@ -627,3 +627,16 @@ array(['male', 'female'], dtype=object)
 3  80478.096153   63.22  female  other  16   95         1
 4  82089.345498   63.08  female  white  17   43         1
 >>>
+
+>>> df.sex.replace(['male','female'],[0,1], inplace=True)
+>>> df.head()
+           earn  height  sex   race  ed  age
+0  79571.299011   73.89    0  white  16   49
+1  96396.988643   66.23    1  white  16   62
+2  48710.666947   63.77    1  white  16   33
+3  80478.096153   63.22    1  other  16   95
+4  82089.345498   63.08    1  white  17   43
+>>>
+
+>>> del df['sex_code']
+>>>
