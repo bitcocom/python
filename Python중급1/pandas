@@ -757,6 +757,8 @@ Royals  701.0  804.0    NaN    NaN
 kings     NaN  812.0    NaN    NaN
 >>>
 
+- Index level을 변경할 수 있음
+
 >>> h_index.swaplevel()
 Year  Team
 2014  Devils    863
@@ -811,4 +813,216 @@ Year
 2016    1450
 2017    1478
 Name: Points, dtype: int64
+>>>
+
+[Groupby - grouped]
+-Groupby에 의해 Split된 상태를 추출 가능함
+
+>>> grouped=df.groupby("Team")
+>>> for name, group in grouped : # Tuple형태로 그룹의 key값 Value값이 추출됨
+	print(name)
+	print(group)
+
+Devils
+     Team  Rank  Year  Points
+2  Devils     2  2014     863
+3  Devils     3  2015     673
+Kings
+    Team  Rank  Year  Points
+4  Kings     3  2014     741
+6  Kings     1  2016     756
+7  Kings     1  2017     788
+
+- 특정 key값을 가진 그룹의 정보만 추출 가능
+
+>>> grouped.get_group('Devils')
+     Team  Rank  Year  Points
+2  Devils     2  2014     863
+3  Devils     3  2015     673
+>>>
+
+[ Groupby : aggregation ]
+
+>>> grouped.agg(sum)
+        Rank  Year  Points
+Team
+Devils     5  4029    1536
+Kings      5  6047    2285
+Riders     7  8062    3049
+Royals     5  4029    1505
+kings      4  2015     812
+
+>>> import numpy as np
+>>> grouped.agg(np.mean)
+            Rank         Year      Points
+Team
+Devils  2.500000  2014.500000  768.000000
+Kings   1.666667  2015.666667  761.666667
+Riders  1.750000  2015.500000  762.250000
+Royals  2.500000  2014.500000  752.500000
+kings   4.000000  2015.000000  812.000000
+>>>
+
+- 특정 컬럼에 여러개의 function을 Apply할 수도 있음
+
+>>> grouped['Points'].agg([np.sum, np.mean, np.std])
+         sum        mean         std
+Team
+Devils  1536  768.000000  134.350288
+Kings   2285  761.666667   24.006943
+Riders  3049  762.250000   88.567771
+Royals  1505  752.500000   72.831998
+kings    812  812.000000         NaN
+>>>
+
+[ Groupby - filter ]
+- 특정 조건으로 데이터를 검색할때 사용
+- filter안에는 boolean 조건이 존재해야함
+- len(x)는 grouped된 Dataframe 개수
+
+>>> df.groupby('Team').filter(lambda x : len(x) >=3)
+      Team  Rank  Year  Points
+0   Riders     1  2014     876
+1   Riders     2  2015     789
+4    Kings     3  2014     741
+6    Kings     1  2016     756
+7    Kings     1  2017     788
+8   Riders     2  2016     694
+11  Riders     2  2017     690
+
+>>> df.groupby('Team').filter(lambda x : x['Rank'].sum()>2)
+      Team  Rank  Year  Points
+0   Riders     1  2014     876
+1   Riders     2  2015     789
+2   Devils     2  2014     863
+3   Devils     3  2015     673
+4    Kings     3  2014     741
+5    kings     4  2015     812
+6    Kings     1  2016     756
+7    Kings     1  2017     788
+8   Riders     2  2016     694
+9   Royals     4  2014     701
+10  Royals     1  2015     804
+11  Riders     2  2017     690
+
+>>> df.groupby('Team').filter(lambda x : x['Points'].max()>800)
+      Team  Rank  Year  Points
+0   Riders     1  2014     876
+1   Riders     2  2015     789
+2   Devils     2  2014     863
+3   Devils     3  2015     673
+5    kings     4  2015     812
+8   Riders     2  2016     694
+9   Royals     4  2014     701
+10  Royals     1  2015     804
+11  Riders     2  2017     690
+>>>
+
+>>> df.groupby('Team').filter(lambda x : x['Rank'].mean()>1)
+      Team  Rank  Year  Points
+0   Riders     1  2014     876
+1   Riders     2  2015     789
+2   Devils     2  2014     863
+3   Devils     3  2015     673
+4    Kings     3  2014     741
+5    kings     4  2015     812
+6    Kings     1  2016     756
+7    Kings     1  2017     788
+8   Riders     2  2016     694
+9   Royals     4  2014     701
+10  Royals     1  2015     804
+11  Riders     2  2017     690
+>>>
+
+>>> df_phone=pd.read_csv("C://phone.csv")
+>>> df_phone.head()
+   index            date  duration     ...         month   network network_type
+0      0  15/10/14 06:58    34.429     ...       2014-11      data         data
+1      1  15/10/14 06:58    13.000     ...       2014-11  Vodafone       mobile
+2      2  15/10/14 14:46    23.000     ...       2014-11    Meteor       mobile
+3      3  15/10/14 14:48     4.000     ...       2014-11     Tesco       mobile
+4      4  15/10/14 17:27     4.000     ...       2014-11     Tesco       mobile
+
+[5 rows x 7 columns]
+>>>
+
+>>> df_phone['date']=df_phone['date'].apply(dateutil.parser.parse, dayfirst=True)
+>>> df_phone.head()
+   index                date     ...        network network_type
+0      0 2014-10-15 06:58:00     ...           data         data
+1      1 2014-10-15 06:58:00     ...       Vodafone       mobile
+2      2 2014-10-15 14:46:00     ...         Meteor       mobile
+3      3 2014-10-15 14:48:00     ...          Tesco       mobile
+4      4 2014-10-15 17:27:00     ...          Tesco       mobile
+
+[5 rows x 7 columns]
+>>>
+
+>>> df_phone.groupby('month')['duration'].sum()
+month
+2014-11    26639.441
+2014-12    14641.870
+2015-01    18223.299
+2015-02    15522.299
+2015-03    22750.441
+Name: duration, dtype: float64
+>>>
+
+>>> df_phone[df_phone['item']=='call'].groupby('month')['duration'].sum()
+month
+2014-11    25547.0
+2014-12    13561.0
+2015-01    17070.0
+2015-02    14416.0
+2015-03    21727.0
+Name: duration, dtype: float64
+>>>
+
+>>> df_phone.groupby(['month','item'])['duration'].sum()
+month    item
+2014-11  call    25547.000
+         data      998.441
+         sms        94.000
+2014-12  call    13561.000
+         data     1032.870
+         sms        48.000
+2015-01  call    17070.000
+         data     1067.299
+         sms        86.000
+2015-02  call    14416.000
+         data     1067.299
+         sms        39.000
+2015-03  call    21727.000
+         data      998.441
+         sms        25.000
+Name: duration, dtype: float64
+>>>
+
+>>> df_phone.groupby('month', as_index=False).agg({'duration': "sum"})
+     month   duration
+0  2014-11  26639.441
+1  2014-12  14641.870
+2  2015-01  18223.299
+3  2015-02  15522.299
+4  2015-03  22750.441
+>>> 
+
+>>> df_phone.groupby(['month','item']).agg({'duration':sum, 'network_type':'count','date':'first'})
+               duration  network_type                date
+month   item
+2014-11 call  25547.000           107 2014-10-15 06:58:00
+        data    998.441            29 2014-10-15 06:58:00
+        sms      94.000            94 2014-10-16 22:18:00
+2014-12 call  13561.000            79 2014-11-14 17:24:00
+        data   1032.870            30 2014-11-13 06:58:00
+        sms      48.000            48 2014-11-14 17:28:00
+2015-01 call  17070.000            88 2014-12-15 20:03:00
+        data   1067.299            31 2014-12-13 06:58:00
+        sms      86.000            86 2014-12-15 19:56:00
+2015-02 call  14416.000            67 2015-01-15 10:36:00
+        data   1067.299            31 2015-01-13 06:58:00
+        sms      39.000            39 2015-01-15 12:23:00
+2015-03 call  21727.000            47 2015-02-12 20:15:00
+        data    998.441            29 2015-02-13 06:58:00
+        sms      25.000            25 2015-02-19 18:46:00
 >>>

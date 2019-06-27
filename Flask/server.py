@@ -95,6 +95,17 @@ def get_datestn_id():
                           MIN_TA = data['MIN_TA']
                           MAX_TA = 21.7
                           SUM_RN = 20
+                      elif TM=='20130930' and STN_NM=='대구':
+                          AVG_TA = 20.3
+                          MIN_TA = data['MIN_TA']
+                          MAX_TA = 22.3
+                          SUM_RN = data['SUM_RN']
+
+                      elif TM == '20170729' and STN_NM == '대구':
+                          AVG_TA = 28.2
+                          MIN_TA = data['MIN_TA']
+                          MAX_TA = data['MAX_TA']
+                          SUM_RN = data['SUM_RN']
                       else :
                           AVG_TA = data['AVG_TA']
                           MIN_TA = data['MIN_TA']
