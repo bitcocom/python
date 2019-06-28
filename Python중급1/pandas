@@ -841,6 +841,12 @@ Kings
 3  Devils     3  2015     673
 >>>
 
+[ Groupby - grouped]
+- 추출된 group정보에는 세가지 유형의 apply가 가능하다.
+- Aggregation : 요약된 통계정보를 추출해 줌
+- Transformation : 해당 정보를 변환해줌
+- Filteration : 특정정보를 제거 하여 보여주는 필터링 기능
+
 [ Groupby : aggregation ]
 
 >>> grouped.agg(sum)
@@ -874,6 +880,7 @@ Riders  3049  762.250000   88.567771
 Royals  1505  752.500000   72.831998
 kings    812  812.000000         NaN
 >>>
+
 
 [ Groupby - filter ]
 - 특정 조건으로 데이터를 검색할때 사용
@@ -1005,7 +1012,7 @@ Name: duration, dtype: float64
 2  2015-01  18223.299
 3  2015-02  15522.299
 4  2015-03  22750.441
->>> 
+>>>
 
 >>> df_phone.groupby(['month','item']).agg({'duration':sum, 'network_type':'count','date':'first'})
                duration  network_type                date
@@ -1026,3 +1033,85 @@ month   item
         data    998.441            29 2015-02-13 06:58:00
         sms      25.000            25 2015-02-19 18:46:00
 >>>
+
+>>> df_phone.groupby(['month','item']).agg({'duration':[min], 'network_type':'count','date':[min,'first', 'nunique']})
+             duration network_type   ...              date
+                  min        count   ...             first nunique
+month   item                         ...
+2014-11 call    1.000          107   ...    15/10/14 06:58     104
+        data   34.429           29   ...    15/10/14 06:58      29
+        sms     1.000           94   ...    16/10/14 22:18      79
+2014-12 call    2.000           79   ...    14/11/14 17:24      76
+        data   34.429           30   ...    13/11/14 06:58      30
+        sms     1.000           48   ...    14/11/14 17:28      41
+2015-01 call    2.000           88   ...    15/12/14 20:03      84
+        data   34.429           31   ...    13/12/14 06:58      31
+        sms     1.000           86   ...    15/12/14 19:56      58
+2015-02 call    1.000           67   ...    15/01/15 10:36      67
+        data   34.429           31   ...    13/01/15 06:58      31
+        sms     1.000           39   ...    15/01/15 12:23      27
+2015-03 call    2.000           47   ...    12/02/15 20:15      47
+        data   34.429           29   ...    13/02/15 06:58      29
+        sms     1.000           25   ...    19/02/15 18:46      17
+
+[15 rows x 5 columns]
+>>>
+
+[Merge]
+- SQL에서 많이 사용하는 Merge와 같은 기능
+- 두 개의 데이터를 하나로 합침
+- INNER JOIN, FULL JOIN, LEFT JOIN, RIGHT JOIN
+
+>>> raw_data = {
+        'subject_id': ['1', '2', '3', '4', '5', '7', '8', '9', '10', '11'],
+        'test_score': [51, 15, 15, 61, 16, 14, 15, 1, 61, 16]}
+>>>
+>>> df_a = pd.DataFrame(raw_data, columns = ['subject_id', 'test_score'])
+>>> df_a
+  subject_id  test_score
+0          1          51
+1          2          15
+2          3          15
+3          4          61
+4          5          16
+5          7          14
+6          8          15
+7          9           1
+8         10          61
+9         11          16
+
+>>> raw_data = {
+        'subject_id': ['4', '5', '6', '7', '8'],
+        'first_name': ['Billy', 'Brian', 'Bran', 'Bryce', 'Betty'],
+        'last_name': ['Bonder', 'Black', 'Balwner', 'Brice', 'Btisan']}
+>>> df_b = pd.DataFrame(raw_data, columns = ['subject_id', 'first_name', 'last_name'])
+>>> df_b
+  subject_id first_name last_name
+0          4      Billy    Bonder
+1          5      Brian     Black
+2          6       Bran   Balwner
+3          7      Bryce     Brice
+4          8      Betty    Btisan
+
+>>> pd.merge(df_a, df_b, on='subject_id') #subject_id기준으로 merge
+  subject_id  test_score first_name last_name
+0          4          61      Billy    Bonder
+1          5          16      Brian     Black
+2          7          14      Bryce     Brice
+3          8          15      Betty    Btisan
+
+>>> pd.merge(df_a, df_b, left_on='subject_id', right_on='subject_id')
+  subject_id  test_score first_name last_name
+0          4          61      Billy    Bonder
+1          5          16      Brian     Black
+2          7          14      Bryce     Brice
+3          8          15      Betty    Btisan
+>>>
+
+>>> pd.merge(df_a, df_b, on='subject_id', how='inner')
+  subject_id  test_score first_name last_name
+0          4          61      Billy    Bonder
+1          5          16      Brian     Black
+2          7          14      Bryce     Brice
+3          8          15      Betty    Btisan
+>>> 

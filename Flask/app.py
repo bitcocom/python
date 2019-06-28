@@ -1,11 +1,14 @@
 from flask import Flask
 from flask import render_template
 from datetime import time
+import pandas as pd
+from pandas import Series, DataFrame
 
 app = Flask(__name__)
 
 @app.route("/simple_chart")
 def chart():
+    df=pd.read_csv('final1101.csv');
     legend = '서울'
     yyyy = ["2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"]
     price = [2234, 2133, 3124, 2567, 3178, 1980, 2100, 3112]
