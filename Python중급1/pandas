@@ -1114,4 +1114,74 @@ month   item                         ...
 1          5          16      Brian     Black
 2          7          14      Bryce     Brice
 3          8          15      Betty    Btisan
+>>>
+
+[DB]
+https://www.dataquest.io/blog/python-pandas-databases/
+
+>>> import pandas as pd
+
+>>> import sqlite3
+>>> conn = sqlite3.connect("C://flights.db")
+>>> cur = conn.cursor()
+
+>>> cur.execute("select * from airlines limit 5;")
+
+<sqlite3.Cursor object at 0x000002177AD00650>
+>>> results = cur.fetchall()
+
+>>> results
+[(0, '1', 'Private flight', '\\N', '-', None, None, None, 'Y'), (1, '2', '135 Airways', '\\N', None, 'GNL', 'GENERAL', 'United States', 'N'), (2, '3', '1Time Airline', '\\N', '1T', 'RNX', 'NEXTIME', 'South Africa', 'Y'), (3, '4', '2 Sqn No 1 Elementary Flying Training School', '\\N', None, 'WYT', None, 'United Kingdom', 'N'), (4, '5', '213 Flight Unit', '\\N', None, 'TFU', None, 'Russia', 'N')]
+>>> df_airplines = pd.read_sql_query("select * from airlines;", conn)
+
+>>> df_airplines.head()
+   index id  ...           country active
+0      0  1  ...              None      Y
+1      1  2  ...     United States      N
+2      2  3  ...      South Africa      Y
+3      3  4  ...    United Kingdom      N
+4      4  5  ...            Russia      N
+
+[5 rows x 9 columns]
+>>>
+
+[matplotlib]
+ - pyplot 객체를 사용하여 데이터를 표시
+ - Pyplot 객체에 그래프들을 쌓은 다음 show로 flush
+
+ >>> import matplotlib.pyplot as plt
+
+>>> X = range(100)
+
+>>> Y = range(100)
+
+>>> plt.plot(X, Y)
+[<matplotlib.lines.Line2D object at 0x000002177F1BB8D0>]
+>>> plt.show()
+>>>
+
+>>> import matplotlib.pyplot as plt
+>>> X = range(100)
+>>> Y=[value**2 for value in X]
+>>> plt.plot(X, Y)
+[<matplotlib.lines.Line2D object at 0x000002177F5090F0>]
+>>> plt.show()
+>>>
+
+>>> import numpy as np
+>>> X_1 = range(100)
+>>> Y_1 = [np.cos(value) for value in X]
+>>> X_2 = range(100)
+
+>>> Y_2 = [np.sin(value) for value in X]
+>>> plt.plot(X_1, Y_1)
+
+[<matplotlib.lines.Line2D object at 0x000002177F1D42E8>]
+>>> plt.plot(X_2, Y_2)
+
+[<matplotlib.lines.Line2D object at 0x000002177F1D4E10>]
+>>> plt.plot(range(100), range(100))
+
+[<matplotlib.lines.Line2D object at 0x000002177F1F0BA8>]
+>>> plt.show()
 >>> 
