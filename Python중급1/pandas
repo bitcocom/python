@@ -1146,15 +1146,14 @@ https://www.dataquest.io/blog/python-pandas-databases/
 >>>
 
 [matplotlib]
- - pyplot 객체를 사용하여 데이터를 표시
- - Pyplot 객체에 그래프들을 쌓은 다음 show로 flush
+- python의 대표적인 시각화 도구
+- 다양한 Graph지원, Pandas 연동
+- pyplot 객체를 사용하여 데이터를 표시
+- Pyplot 객체에 그래프들을 쌓은 다음 show로 flush
 
- >>> import matplotlib.pyplot as plt
-
+>>> import matplotlib.pyplot as plt
 >>> X = range(100)
-
 >>> Y = range(100)
-
 >>> plt.plot(X, Y)
 [<matplotlib.lines.Line2D object at 0x000002177F1BB8D0>]
 >>> plt.show()
@@ -1167,6 +1166,10 @@ https://www.dataquest.io/blog/python-pandas-databases/
 [<matplotlib.lines.Line2D object at 0x000002177F5090F0>]
 >>> plt.show()
 >>>
+
+[matplotlib]
+- Graph는 원래 figure 객체에 생성됨
+- pyplot 객체 사용시, 기본 figure에 그래프가 그려짐
 
 >>> import numpy as np
 >>> X_1 = range(100)
@@ -1184,4 +1187,176 @@ https://www.dataquest.io/blog/python-pandas-databases/
 
 [<matplotlib.lines.Line2D object at 0x000002177F1F0BA8>]
 >>> plt.show()
->>> 
+>>>
+
+>>> fig = plt.figure() # figure 반환
+>>> fig.set_size_inches(10,10) # 크기지정
+>>> ax_1 = fig.add_subplot(1,2,1) # 두개의 plot 생성
+>>> ax_2 = fig.add_subplot(1,2,2)
+>>> ax_1.plot(X_1, Y_1, c="b")
+[<matplotlib.lines.Line2D object at 0x000002177C681EF0>]
+>>> ax_2.plot(X_2, Y_2, c="g")
+[<matplotlib.lines.Line2D object at 0x0000021700C18080>]
+>>> plt.show() # show & flush
+>>>
+
+[Set color]
+- Color 속성을 사용
+- Float -> 흑백, rgb color, predefined color 사용
+- http://matplotlib.org/2.0.2/api/colors_api.html
+
+>>> X_1 = range(100)
+>>> Y_1 = [value for value in X]
+>>> X_2 = range(100)
+>>> Y_2 = [value + 100 for value in X]
+>>> plt.plot(X_1, Y_1, color="#000000")
+[<matplotlib.lines.Line2D object at 0x00000217011C7588>]
+>>> plt.plot(X_2, Y_2, c="c")
+[<matplotlib.lines.Line2D object at 0x0000021700AF6438>]
+>>> plt.show()
+
+[Set linstyle]
+- ls 또는 linestyle 속성 사용
+- https://matplotlib.org/examples/lines_bars_and_markers/linestyles.html
+
+>>> plt.plot(X_1, Y_1, c="b", linestyle="dashed")
+[<matplotlib.lines.Line2D object at 0x000002170136DDD8>]
+>>> plt.plot(X_2, Y_2, c="r", ls="dotted")
+[<matplotlib.lines.Line2D object at 0x0000021700B13748>]
+>>> plt.show()
+>>>
+
+[Set title]
+- Pyplot에 title함수 사용, figure의 subplot별 입력 가능
+
+>>> plt.plot(X_1, Y_1, c="b", linestyle="dashed")
+[<matplotlib.lines.Line2D object at 0x000002170151B748>]
+>>> plt.plot(X_2, Y_2, c="r", ls="dotted")
+[<matplotlib.lines.Line2D object at 0x00000217011DB7B8>]
+>>> plt.title("Two lines")
+Text(0.5, 1.0, 'Two lines')
+>>> plt.show()
+>>>
+
+[Set title]
+- Latex 타입의 표현도 가능 (수식 표현 가능)
+
+>>> plt.plot(X_1, Y_1, color="b", linestyle="dashed")
+[<matplotlib.lines.Line2D object at 0x00000217016CF0F0>]
+>>> plt.plot(X_2, Y_2, color="r", linestyle="dotted")
+[<matplotlib.lines.Line2D object at 0x000002170137A5F8>]
+>>> plt.title('$y = \\frac{ax + b}{test}$')
+Text(0.5, 1.0, '$y = \\frac{ax + b}{test}$')
+>>> plt.show()
+>>>
+
+>>> plt.plot(X_1, Y_1, color="b", linestyle="dashed")
+[<matplotlib.lines.Line2D object at 0x0000021702B3CDD8>]
+>>> plt.plot(X_2, Y_2, color="r", linestyle="dotted")
+[<matplotlib.lines.Line2D object at 0x0000021700BC62B0>]
+>>> plt.title('$y = ax+b$')
+Text(0.5, 1.0, '$y = ax+b$')
+>>> plt.xlabel('$x_line$')
+Text(0.5, 0, '$x_line$')
+>>> plt.ylabel('y_line')
+Text(0, 0.5, 'y_line')
+>>> plt.show()
+>>>
+
+>>> plt.plot(X_1, Y_1, color="b", linestyle="dashed")
+[<matplotlib.lines.Line2D object at 0x0000021702BA9710>]
+>>> plt.plot(X_2, Y_2, color="r", linestyle="dotted")
+[<matplotlib.lines.Line2D object at 0x0000021702BA9C50>]
+>>> plt.text(50, 70, "Line_1")
+Text(50, 70, 'Line_1')
+>>> plt.annotate(
+    'line_2', xy=(50, 150), xytext=(20, 175),
+    arrowprops=dict(facecolor='black', shrink=0.05))
+Text(20, 175, 'line_2')
+>>> plt.title('$y = ax+b$')
+Text(0.5, 1.0, '$y = ax+b$')
+>>> plt.xlabel('$x_line$')
+Text(0.5, 0, '$x_line$')
+>>> plt.ylabel('y_line')
+Text(0, 0.5, 'y_line')
+>>> plt.show()
+>>>
+
+[Set legend]
+- Legend 함수로 범례를 표시함, loc 위치등 속성 지정
+
+>>> plt.plot(X_1, Y_1, color="b", linestyle="dashed", label='line_1')
+[<matplotlib.lines.Line2D object at 0x00000217011E1F28>]
+>>> plt.plot(X_2, Y_2, color="r", linestyle="dotted", label='line_2')
+[<matplotlib.lines.Line2D object at 0x0000021702BDB9B0>]
+>>> plt.legend(shadow=True, fancybox=False, loc="upper right")
+<matplotlib.legend.Legend object at 0x00000217011E1780>
+>>> plt.title('$y = ax+b$')
+Text(0.5, 1.0, '$y = ax+b$')
+>>> plt.xlabel('$x_line$')
+Text(0.5, 0, '$x_line$')
+>>> plt.ylabel('y_line')
+Text(0, 0.5, 'y_line')
+>>> plt.show()
+>>>
+
+[Scatter]
+- scatter 함수 사용, marker: scatter 모양지정
+>>> data_1 = np.random.rand(512, 2)
+>>> data_2 = np.random.rand(512, 2)
+>>> data_1, data_2
+(array([[0.33943976, 0.23600295],
+       [0.85248263, 0.34678515],
+       [0.20519337, 0.86488874],
+       ...,
+       [0.89782307, 0.55294584],
+       [0.18924291, 0.96367079],
+       [0.52866277, 0.42196911]]), array([[0.80850519, 0.46381252],
+       [0.25096028, 0.7747796 ],
+       [0.50762918, 0.18619323],
+       ...,
+       [0.12337246, 0.1054412 ],
+       [0.06804738, 0.15090802],
+       [0.96540638, 0.066109  ]]))
+>>> plt.scatter(data_1[:,0], data_1[:,1], c="b", marker="x")
+<matplotlib.collections.PathCollection object at 0x0000021700BB4748>
+>>> plt.scatter(data_2[:,0], data_2[:,1], c="r", marker="o")
+<matplotlib.collections.PathCollection object at 0x000002177F1B7E80>
+>>> plt.show()
+>>>
+
+- s: 데이터의 크기를 지정, 데이터의 크기비교가능
+>>> N = 50
+>>> x = np.random.rand(N)
+>>> y = np.random.rand(N)
+>>> colors = np.random.rand(N)
+>>> area = np.pi * (15 * np.random.rand(N))**2
+>>> plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+<matplotlib.collections.PathCollection object at 0x000002177F20C748>
+>>> plt.show()
+>>>
+
+[Bar chart]
+- Bar 함수 사용
+
+>>> data = [[5., 25., 50., 20.],
+        [4., 23., 51., 17],
+        [6., 22., 52., 19]]
+
+>>> X = np.arange(0,8,2)
+>>> X
+array([0, 2, 4, 6])
+>>> plt.bar(X + 0.00, data[0], color = 'b', width = 0.50)
+
+<BarContainer object of 4 artists>
+>>> plt.bar(X + 0.50, data[1], color = 'g', width = 0.50)
+
+<BarContainer object of 4 artists>
+>>> plt.bar(X + 1.0, data[2], color = 'r', width = 0.50)
+
+<BarContainer object of 4 artists>
+>>> plt.xticks(X+0.50, ("A","B","C", "D"))
+
+([<matplotlib.axis.XTick object at 0x000002170151B588>, <matplotlib.axis.XTick object at 0x0000021701528160>, <matplotlib.axis.XTick object at 0x0000021701528080>, <matplotlib.axis.XTick object at 0x000002177FE63780>], <a list of 4 Text xticklabel objects>)
+>>> plt.show()
+>>>
