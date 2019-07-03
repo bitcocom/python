@@ -1,5 +1,8 @@
 [matplotlib]
 - https://matplotlib.org/api/index.html
+- https://datascienceschool.net/view-notebook/d0b1637803754bb083b5722c9f2209d0/
+- http://matplotlib.org/gallery.html
+
 - python의 대표적인 시각화 도구
 - 다양한 Graph지원, Pandas 연동
 - pyplot 객체를 사용하여 데이터를 표시
