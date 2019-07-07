@@ -31,5 +31,5 @@ True
 >>> map_osm.save(saveFile)
 >>> webbrowser.open(saveFile)
 True
->>> 
+>>>
 
